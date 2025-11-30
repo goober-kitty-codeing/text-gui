@@ -78,7 +78,7 @@ class GUIgui:
             s.imprent(i)
     def imprent(s, object: GUIbase):
         if (object.x<0) or (object.y<0):
-            print("[Error 2] | x or y < 0")
+            print("[Error 2] | x or y < 0 GUIgui.imprent")
             return
         
         pos = object.x + object.y * (s.width + 1)
@@ -115,10 +115,13 @@ class GUIgui:
             s.current_bored -= 1
             if s.current_bored < len(s.boreds): s.current_bored = len(s.boreds) - 1
             return
-        if len( s.objects[s.current_bored] ) - 1 < th.to_int(option):
-            print(f"Object ID {option} dosent exist on screen {s.current_bored}")
-            return
-        s.objects[s.current_bored][ th.to_int(option) ].on_interact()
+        try:
+            if len( s.objects[s.current_bored] ) - 1 < th.to_int(option):
+                print(f"Object ID {option} dosent exist on screen {s.current_bored}")
+                return
+            s.objects[s.current_bored][ th.to_int(option) ].on_interact()
+        except: 
+            print(f"Unhandeld ' {option} '")
     def get_id(s, object: GUIbase):
         try:
             return s.objects[s.current_bored].index(object)
@@ -126,8 +129,9 @@ class GUIgui:
             print("[Error 1] | Object is not in gui.")
             return -1
     def erase_item(s, object: GUIbase):
-        x = object.x - 1
-        y = object.y - 1
+        x = object.x
+        y = object.y
+
         if (x < 0) or (y < 0):
             print("[Error 2] | x or y < 0")
             return
